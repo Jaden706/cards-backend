@@ -51,6 +51,8 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           printf '%s\n' "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/deploy_key
+          echo "Checking SSH private key..."
+          ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null || { echo "::error::GitHub SSH private key is invalid"; exit 1; }
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
 
